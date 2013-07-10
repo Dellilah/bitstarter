@@ -27,7 +27,7 @@ var rest = require('restler');
 var cheerio = require('cheerio');
 var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
-var URL = "http://secure-woodland-5909.herokuapp.com/";
+var URLADRESS_DEFAULT = "http://secure-woodland-5909.herokuapp.com/";
 
 var assertFileExists = function(infile) {
     var instr = infile.toString();
@@ -61,7 +61,7 @@ var checkHtmlFile = function(htmlfile, checksfile) {
     return out;
 };
 
-var checkHtmlBuffer = function(htmlbuffer, checksfile) {
+var checkUrlHtml = function(htmlbuffer, checksfile) {
   $ = cheerioHtmlBuffer(htmlbuffer);
   var checks = loadChecks(checksfile).sort();
   var out = {};
@@ -83,7 +83,7 @@ if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-        .option('-u, --url <url_address>', 'Adress to .html file', URL)
+        .option('-u, --url <url_address>', 'Adress to .html file', URLADRESS_DEFAULT)
         .parse(process.argv);
 
     if(program.file !== HTMLFILE_DEFAULT){
@@ -98,7 +98,7 @@ if(require.main == module) {
         this.retry(4000);
         }
         else{
-          var checkJson = checkHtmlBuffer(result, program.checks);
+          var checkJson = checkUrlHtml(result, program.checks);
           var outJson = JSON.stringify(checkJson, null, 4);
           console.log(outJson);
         }
