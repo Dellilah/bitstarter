@@ -5,7 +5,7 @@ var tmp = text.toString('utf-8');
 var app = express.createServer(express.logger());
 
 app.get('/', function(request, response) {
-  response.send('Ala');
+  response.send(tmp);
 });
 
 var port = process.env.PORT || 5000;
